@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import Timer from './Timer';
+import TimeToPresentation from './TimeToPresentation';
 
 export default function Header() {
   return (
@@ -17,7 +17,7 @@ export default function Header() {
 
         <LinkButton>Q&A</LinkButton>
       </LinkWrapper>
-      <Timer />
+      <TimeToPresentation />
     </>
   );
 }
