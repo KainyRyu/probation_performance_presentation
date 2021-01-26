@@ -1,55 +1,78 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import styled from '@emotion/styled';
+import dayjs from 'dayjs';
 
 export default function Timer() {
-  const [ends, setEnds] = useState(0);
-  const [timeLeft, setTimeLeft] = useState();
+  const [startTime, setStartTime] = useState(0);
+  const [timeInText, setTimeInText] = useState('00 : 00');
+  const [leftSeconds, setLeftSeconds] = useState(0);
 
-  const currentTime = new Date().getTime();
-
-  const timeCal = timeleft => {
-    const days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  // Starting time
+  const onClick = useCallback(() => {
+    setStartTime(dayjs().format('mm : ss'));
+    setLeftSeconds(
+      dayjs(startTime, 'mm : ss')
+        .add(20, 'minute')
+        .diff(dayjs(startTime, 'mm : ss'), 'second')
     );
-    const minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
-    return { days, hours, minutes, seconds };
-  };
+  }, [startTime]);
 
-  const onClickStart = () => {
-    const starts = currentTime;
+  useEffect(() => {
+    const minutes = Math.floor(leftSeconds / 60);
+    const seconds = Math.floor(leftSeconds - minutes * 60);
+    setTimeInText(`${minutes}: ${seconds}`);
+  }, [setTimeInText, leftSeconds]);
 
-    starts && setEnds(starts + 1200000);
-  };
-
-  setInterval(() => ends && setTimeLeft(timeCal(ends - currentTime)), 1000);
+  useInterval(() => {
+    if (leftSeconds > 0) {
+      setLeftSeconds(leftSeconds - 1);
+    }
+  }, 1000);
 
   return (
-    <>
-      <button onClick={onClickStart}>Start</button>
-      <div>
-        20min count down : {timeLeft && timeLeft.minutes}:{' '}
-        {timeLeft && timeLeft.seconds}
-      </div>
-    </>
+    <TimerWrapper>
+      {!startTime ? (
+        <button onClick={onClick}>Start</button>
+      ) : (
+        <ShowTime>{timeInText}</ShowTime>
+      )}
+    </TimerWrapper>
   );
 }
 
-const TimeBar = styled.div`
-  border: solid 1px black;
-  height: 30px;
-  width: 30vw;
-`;
-
-const Overlay = styled.div`
-  background: dodgerblue;
-  position: absolute;
-  height: 20px;
-  width: 20px;
-`;
-
-const StartBtn = styled.button`
-  background: white;
+const ShowTime = styled.div`
   border: black 1px solid;
+  font-size: 20px;
+  text-align: center;
+  width: 80px;
 `;
+
+const TimerWrapper = styled.div`
+  align-self: center;
+`;
+
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      const id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
