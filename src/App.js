@@ -1,21 +1,24 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 import Header from './component/Header.js';
-import Timer from './component/Timer.js';
 import MainPage from './page/MainPage';
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <AppWrapper>
         <Header />
         <Switch>
           <Route path="/" component={MainPage} />
         </Switch>
-      </div>
-      <Timer />
+      </AppWrapper>
     </Router>
   );
 }
 
 export default App;
+
+const AppWrapper = styled.div`
+  padding: 10px;
+`;

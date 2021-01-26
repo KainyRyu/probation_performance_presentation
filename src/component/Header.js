@@ -1,34 +1,40 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import TimeToPresentation from './TimeToPresentation';
+import Timer from './Timer';
 
 export default function Header() {
   return (
-    <>
+    <HeaderWrapper>
       <LinkWrapper>
-        <LinkButton>Introduce</LinkButton>
+        <LinkButton href="/">Introduce</LinkButton>
 
-        <LinkButton>Work</LinkButton>
+        <LinkButton href="/">Work</LinkButton>
 
-        <LinkButton>Performance</LinkButton>
+        <LinkButton href="/">Performance</LinkButton>
 
-        <LinkButton>Thank you</LinkButton>
+        <LinkButton href="/">Thank you</LinkButton>
 
-        <LinkButton>Q&A</LinkButton>
+        <LinkButton href="/">Q&A</LinkButton>
       </LinkWrapper>
-      <TimeToPresentation />
-    </>
+      <Timer />
+    </HeaderWrapper>
   );
 }
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const LinkWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 30vw;
+  width: 40vw;
 `;
 
-const LinkButton = styled.div`
-  color: #333;
+const LinkButton = styled.a`
   boder-style: none;
+  color: #333;
+  font-size: 30px;
 `;
