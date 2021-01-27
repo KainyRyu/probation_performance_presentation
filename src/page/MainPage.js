@@ -1,19 +1,25 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import DueCountdown from '../component/DueCountdown';
 
 export default function MainPage() {
   return (
-    <div>
-      {/* Header */}
-      <Contexts>
-        <DueCountdown />
-        <h1>조아라에서 3개월... </h1>
-      </Contexts>
-    </div>
+    <Main>
+      {/* <DueCountdown /> */}
+      <Heading>Kainy's Provation Presentation</Heading>
+      <Heading>3 Months in Joara </Heading>
+    </Main>
   );
 }
 
-const Contexts = styled.div`
+const Main = styled.div`
+  background: gray;
+  border-radius: 30px;
   color: #333333;
+  height: 95vh;
+  width: 100%;
+  position: relative;
+`;
+
+const Heading = styled.h1`
+  position: relative;
 `;
